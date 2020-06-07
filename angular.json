@@ -1,39 +1,43 @@
 {
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
+  "newProjectRoot": "projects",
   "projects": {
     "setagla-bank": {
       "projectType": "application",
       "schematics": {
-        "@nrwl/angular:component": {
+        "@schematics/angular:component": {
           "style": "scss"
         }
       },
-      "root": "apps/setagla-bank",
-      "sourceRoot": "apps/setagla-bank/src",
-      "prefix": "setagla-bank",
+      "root": "",
+      "sourceRoot": "src",
+      "prefix": "app",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/apps/setagla-bank",
-            "index": "apps/setagla-bank/src/index.html",
-            "main": "apps/setagla-bank/src/main.ts",
-            "polyfills": "apps/setagla-bank/src/polyfills.ts",
-            "tsConfig": "apps/setagla-bank/tsconfig.app.json",
+            "outputPath": "dist/setagla-bank",
+            "index": "src/index.html",
+            "main": "src/main.ts",
+            "polyfills": "src/polyfills.ts",
+            "tsConfig": "tsconfig.app.json",
             "aot": true,
             "assets": [
-              "apps/setagla-bank/src/favicon.ico",
-              "apps/setagla-bank/src/assets"
+              "src/favicon.ico",
+              "src/assets"
             ],
-            "styles": ["apps/setagla-bank/src/styles.scss"],
+            "styles": [
+              "src/styles.scss"
+            ],
             "scripts": []
           },
           "configurations": {
             "production": {
               "fileReplacements": [
                 {
-                  "replace": "apps/setagla-bank/src/environments/environment.ts",
-                  "with": "apps/setagla-bank/src/environments/environment.prod.ts"
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
                 }
               ],
               "optimization": true,
@@ -62,8 +66,7 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "setagla-bank:build",
-            "proxyConfig": "apps/setagla-bank/proxy.conf.json"
+            "browserTarget": "setagla-bank:build"
           },
           "configurations": {
             "production": {
@@ -77,37 +80,40 @@
             "browserTarget": "setagla-bank:build"
           }
         },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "src/test.ts",
+            "polyfills": "src/polyfills.ts",
+            "tsConfig": "tsconfig.spec.json",
+            "karmaConfig": "karma.conf.js",
+            "assets": [
+              "src/favicon.ico",
+              "src/assets"
+            ],
+            "styles": [
+              "src/styles.scss"
+            ],
+            "scripts": []
+          }
+        },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "apps/setagla-bank/tsconfig.app.json",
-              "apps/setagla-bank/tsconfig.spec.json"
+              "tsconfig.app.json",
+              "tsconfig.spec.json",
+              "e2e/tsconfig.json"
             ],
-            "exclude": ["**/node_modules/**", "!apps/setagla-bank/**"]
+            "exclude": [
+              "**/node_modules/**"
+            ]
           }
         },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "options": {
-            "jestConfig": "apps/setagla-bank/jest.config.js",
-            "tsConfig": "apps/setagla-bank/tsconfig.spec.json",
-            "passWithNoTests": true,
-            "setupFile": "apps/setagla-bank/src/test-setup.ts"
-          }
-        }
-      }
-    },
-    "setagla-bank-e2e": {
-      "root": "apps/setagla-bank-e2e",
-      "sourceRoot": "apps/setagla-bank-e2e/src",
-      "projectType": "application",
-      "architect": {
         "e2e": {
-          "builder": "@nrwl/cypress:cypress",
+          "builder": "@angular-devkit/build-angular:protractor",
           "options": {
-            "cypressConfig": "apps/setagla-bank-e2e/cypress.json",
-            "tsConfig": "apps/setagla-bank-e2e/tsconfig.e2e.json",
+            "protractorConfig": "e2e/protractor.conf.js",
             "devServerTarget": "setagla-bank:serve"
           },
           "configurations": {
@@ -115,109 +121,8 @@
               "devServerTarget": "setagla-bank:serve:production"
             }
           }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": ["apps/setagla-bank-e2e/tsconfig.e2e.json"],
-            "exclude": ["**/node_modules/**", "!apps/setagla-bank-e2e/**"]
-          }
         }
       }
-    },
-    "api": {
-      "root": "apps/api",
-      "sourceRoot": "apps/api/src",
-      "projectType": "application",
-      "prefix": "api",
-      "schematics": {},
-      "architect": {
-        "build": {
-          "builder": "@nrwl/node:build",
-          "options": {
-            "outputPath": "dist/apps/api",
-            "main": "apps/api/src/main.ts",
-            "tsConfig": "apps/api/tsconfig.app.json",
-            "assets": ["apps/api/src/assets"]
-          },
-          "configurations": {
-            "production": {
-              "optimization": true,
-              "extractLicenses": true,
-              "inspect": false,
-              "fileReplacements": [
-                {
-                  "replace": "apps/api/src/environments/environment.ts",
-                  "with": "apps/api/src/environments/environment.prod.ts"
-                }
-              ]
-            }
-          }
-        },
-        "serve": {
-          "builder": "@nrwl/node:execute",
-          "options": {
-            "buildTarget": "api:build"
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "apps/api/tsconfig.app.json",
-              "apps/api/tsconfig.spec.json"
-            ],
-            "exclude": ["**/node_modules/**", "!apps/api/**"]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "options": {
-            "jestConfig": "apps/api/jest.config.js",
-            "tsConfig": "apps/api/tsconfig.spec.json",
-            "passWithNoTests": true
-          }
-        }
-      }
-    },
-    "api-interfaces": {
-      "root": "libs/api-interfaces",
-      "sourceRoot": "libs/api-interfaces/src",
-      "projectType": "library",
-      "schematics": {},
-      "architect": {
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "libs/api-interfaces/tsconfig.lib.json",
-              "libs/api-interfaces/tsconfig.spec.json"
-            ],
-            "exclude": ["**/node_modules/**", "!libs/api-interfaces/**"]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "options": {
-            "jestConfig": "libs/api-interfaces/jest.config.js",
-            "tsConfig": "libs/api-interfaces/tsconfig.spec.json",
-            "passWithNoTests": true
-          }
-        }
-      }
-    }
-  },
-  "cli": {
-    "defaultCollection": "@nrwl/angular"
-  },
-  "schematics": {
-    "@nrwl/angular:application": {
-      "unitTestRunner": "jest",
-      "e2eTestRunner": "cypress"
-    },
-    "@nrwl/angular:library": {
-      "unitTestRunner": "jest"
-    }
-  },
+    }},
   "defaultProject": "setagla-bank"
 }
